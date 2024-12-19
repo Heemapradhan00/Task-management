@@ -80,12 +80,11 @@
             text-align: center;
         }
         .icon {
-            font-size: 3rem;
+            font-size: 2.5rem; /* Adjusted size for icons */
         }
     </style>
 </head>
 <body>
-
 <div class="weather-app">
     <h1>Weather App</h1>
     <div class="input-group">
@@ -111,7 +110,6 @@
         </div>
     </div>
 </div>
-
 <script>
 function getWeather() {
     const city = document.getElementById('city').value;
@@ -120,7 +118,6 @@ function getWeather() {
     const temp = document.getElementById('temp');
     const humidity = document.getElementById('humidity');
     const wind = document.getElementById('wind');
-
     if (city) {
         result.textContent = `Current weather in ${city}`;
         details.style.display = "flex";
@@ -133,6 +130,5 @@ function getWeather() {
     }
 }
 </script>
-
 </body>
 </html>
