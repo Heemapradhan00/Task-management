@@ -18,7 +18,6 @@
             align-items: center;
             height: 100vh;
             color: #fff;
-            transition: background 0.5s ease;
         }
         .weather-app {
             background: rgba(255, 255, 255, 0.2);
@@ -27,7 +26,7 @@
             border-radius: 15px;
             text-align: center;
             width: 350px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             animation: fadeIn 1.5s ease;
         }
         @keyframes fadeIn {
@@ -66,8 +65,14 @@
             background: #0056b3;
         }
         #weather-result {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-top: 20px;
+        }
+        .loading {
+            display: none;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: yellow;
         }
         .weather-details {
             display: flex;
@@ -81,19 +86,7 @@
             text-align: center;
         }
         .icon {
-            font-size: 2.5rem; /* Adjusted size for icons */
-        }
-        .toggle-btn {
-            margin-top: 15px;
-            font-size: 14px;
-            text-decoration: underline;
-            cursor: pointer;
-            color: #f0f0f0;
-        }
-        .fun-fact {
-            margin-top: 20px;
-            font-style: italic;
-            font-size: 0.9rem;
+            font-size: 2.5rem;
         }
     </style>
 </head>
@@ -105,6 +98,7 @@
         <button class="btn" onclick="getWeather()">Get Weather</button>
     </div>
     <p id="weather-result"></p>
+    <p id="loading" class="loading">Fetching weather data...</p>
     <div id="details" class="weather-details" style="display: none;">
         <div>
             <p class="icon">🌡️</p>
@@ -122,69 +116,44 @@
             <p id="wind">--</p>
         </div>
     </div>
-    <p class="toggle-btn" onclick="toggleUnits()">Toggle °C/°F</p>
-    <p id="fun-fact" class="fun-fact"></p>
 </div>
 <script>
-let isCelsius = true;
+    function getWeather() {
+        const city = document.getElementById('city').value;
+        const result = document.getElementById('weather-result');
+        const details = document.getElementById('details');
+        const temp = document.getElementById('temp');
+        const humidity = document.getElementById('humidity');
+        const wind = document.getElementById('wind');
+        const loading = document.getElementById('loading');
 
-function getWeather() {
-    const city = document.getElementById('city').value;
-    const result = document.getElementById('weather-result');
-    const details = document.getElementById('details');
-    const temp = document.getElementById('temp');
-    const humidity = document.getElementById('humidity');
-    const wind = document.getElementById('wind');
-    const funFact = document.getElementById('fun-fact');
+        if (city) {
+            loading.style.display = "block";
+            result.textContent = '';
+            details.style.display = "none";
 
-    if (city) {
-        const randomFacts = [
-            "The highest temperature ever recorded was 56.7°C in California.",
-            "Wind speed is measured in knots. 1 knot = 1.85 km/h!",
-            "Clouds look white because they reflect sunlight equally.",
-            "A rainbow is actually a circle; we see arcs from the ground."
-        ];
+            // Simulate API call with timeout (replace with actual API call)
+            setTimeout(() => {
+                loading.style.display = "none";
 
-        const fact = randomFacts[Math.floor(Math.random() * randomFacts.length)];
-        funFact.textContent = fact;
+                if (city.toLowerCase() === "invalid") {
+                    result.textContent = "City not found! Please enter a valid city.";
+                    return;
+                }
 
-        result.textContent = `Current weather in ${city}`;
-        details.style.display = "flex";
-        temp.textContent = isCelsius ? "25°C" : "77°F";
-        humidity.textContent = "60%";
-        wind.textContent = "15 km/h";
+                result.textContent = `Current weather in ${city}`;
+                details.style.display = "flex";
 
-        updateBackground(25); // Example temperature
-    } else {
-        result.textContent = "Please enter a city name!";
-        details.style.display = "none";
-    }
-}
-
-function toggleUnits() {
-    const temp = document.getElementById('temp');
-    const tempValue = parseFloat(temp.textContent);
-
-    if (!isNaN(tempValue)) {
-        if (isCelsius) {
-            temp.textContent = `${(tempValue * 9/5 + 32).toFixed(1)}°F`;
+                // Simulated weather data (replace with real API data)
+                temp.textContent = "25°C";
+                humidity.textContent = "60%";
+                wind.textContent = "15 km/h";
+            }, 2000);
         } else {
-            temp.textContent = `${((tempValue - 32) * 5/9).toFixed(1)}°C`;
+            result.textContent = "Please enter a city name!";
+            details.style.display = "none";
         }
-        isCelsius = !isCelsius;
     }
-}
-
-function updateBackground(temp) {
-    const body = document.body;
-    if (temp <= 15) {
-        body.style.background = "linear-gradient(to bottom, #6495ED, #1E90FF)";
-    } else if (temp <= 25) {
-        body.style.background = "linear-gradient(to bottom, #87CEEB, #4682B4)";
-    } else {
-        body.style.background = "linear-gradient(to bottom, #FFA07A, #FF6347)";
-    }
-}
 </script>
 </body>
 </html>
